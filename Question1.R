@@ -15,5 +15,5 @@ q1_hist <- ggplot(q1data, aes(x = total_steps)) +
                         labs(title = "Frequency of Total Steps per Day", x = "Total Steps per Day")
 print(q1_hist)
 
-mean_total_steps <- mean(q1data$total_steps)
-median_total_steps <- median(q1data$total_steps)
+q1mean_total_steps <- mean(q1data$total_steps)
+q1median_total_steps <- median(q1data$total_steps)
