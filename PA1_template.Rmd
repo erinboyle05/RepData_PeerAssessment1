@@ -1,25 +1,91 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
+output: html_document
 ---
+Reproducible Data Project 1
+===========================
 
 
 ## Loading and preprocessing the data
 
+To begin, we load the data that we will be working with.  We will also transform the values in the date column from factors into Dates, which we will need later.
 
+```{r, echo=TRUE}
+unzip("activity.zip")
+data <- read.csv("activity.csv")
+data$date <- as.Date(data$date)
+```
+
+At this time, we will also load the packages dplyr, tidyr, and ggplot2:
+
+```{r, echo=TRUE}
+require(dplyr)
+require(tidyr)
+require(ggplot2)
+```
 
 ## What is mean total number of steps taken per day?
 
+Since our data contains missing values and we can ignore them, we will need to process our data to omit these entries.  At the same time, using dplyr and tidyr, we will calculate the total number of steps taken each day:
 
+```{r, echo=TRUE}
+q1data <- data %>%
+        na.omit %>%
+        group_by(date) %>%
+        summarize(total_steps = sum(steps))
+```
+
+Here is a histogram of the total number of steps per day:
+
+```{r, echo=TRUE}
+q1_hist <- ggplot(q1data, aes(x = total_steps)) +
+              geom_histogram(bins = 9) +
+              labs(title = "Frequency of Total Steps per Day", x = "Total Steps per Day")
+print(q1_hist)
+```
+
+Now, to determine the mean and median values of our data:
+
+```{r, echo=TRUE}
+mean(q1data$total_steps)
+median(q1data$total_steps)
+```
 
 ## What is the average daily activity pattern?
 
+Next, we want to see the average number of steps per interval.  Again, we will be ignoring any missing values:
+
+```{r, echo=TRUE}
+q2data <- data %>%
+        na.omit %>%
+        group_by(interval) %>%
+        summarize(mean_steps = mean(steps))
+```
+
+Let's see a time series plot of this data:
+
+```{r, echo=TRUE}
+q2_line <- ggplot(q2data, aes(x = interval, y = mean_steps)) +
+                geom_line() +
+                labs(title = "Average Steps by Interval", x = "Interval", y = "Mean Steps")
+print(q2_line)
+```
+
+We want to know at which interval was there the most activity (number of steps):
+
+```{r, echo=TRUE}
+sortq2 <- q2data[order(-q2data$mean_steps),]
+sortq2[1,1:2]
+```
 
 
 ## Imputing missing values
 
+Up until now, we have been using data that omits any missing values. What would the results look like if we estimated the missing values and repeated our calculation? What values should be use?
+
+We can get an idea of what the missing values could be by taking the data that do we have and averaging the number of steps per interval.  We can then replace the missing values with these averages:
+
+```{r, echo=TRUE}
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+

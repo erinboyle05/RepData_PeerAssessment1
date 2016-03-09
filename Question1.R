@@ -1,6 +1,6 @@
-require(dplyr)
-require(tidyr)
-require(ggplot2)
+require(dplyr, tidyr, ggplot2)
+# require(tidyr)
+# require(ggplot2)
 
 q1data <- data %>%
         na.omit %>%

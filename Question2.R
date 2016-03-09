@@ -13,4 +13,4 @@ q2_line <- ggplot(q2data, aes(x = interval, y = mean_steps)) +
 
 print(q2_line)
 
-max_avg_interval <- max(q2data$mean_steps)
+max_avg_interval <- q2data[order(-q2data$mean_steps),]
